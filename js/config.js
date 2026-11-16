@@ -147,6 +147,10 @@ window.BIRTHDAY_CONFIG = {
   /* ── Lilies (her favourite flowers) ────────────────────────────── */
   lilies: {
     note: "lilies, because they're your favourite ♡",
+    // Hidden note: appears when she clicks the lily beside the cake.
+    secretNote:
+      "I really am fine with what you say on this, but I wanted to try. " +
+      "Can we be what we want to be? Or do you feel better about it?",
   },
 
   /* ── After the card closes · her reaction video ────────────────── */

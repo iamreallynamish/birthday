@@ -178,6 +178,13 @@
     <section class="screen" id="screen-cake">
       <div class="note cake-page drop-in" style="--i:0" id="cakePage">
         <span class="tape tape-a"></span>
+        <!-- hidden note, shown when the lily beside the cake is clicked -->
+        <div class="lily-secret" id="lilySecret" aria-live="polite">
+          <span class="tape tape-b"></span>
+          <div class="torn" data-torn="top,right,bottom,left" data-paper="cream" data-amp="5">
+            <p class="hand" id="lilySecretText"></p>
+          </div>
+        </div>
         <div class="torn" data-torn="top,right,bottom,left" data-paper="cream">
           <div class="cake-bg">
             <div class="torn cake-strip" data-torn="right" data-paper="gingham" data-amp="9"></div>

@@ -460,6 +460,14 @@
       `<span class="tile tile-${kind} sticker" style="--r:${[-4, 3, -2, 4, -3, 5, -5, 2][(i * 3 + word.length) % 8]}deg;--y:${[0, 1, -0.8, 1.4, 0.4][i % 5]}em"><b>${esc(ch)}</b></span>`).join("")}</div>`;
     $("#cakeArt").innerHTML = A.cake(k.candles);
     $("#cakeLily").innerHTML = A.lily();
+
+    // The lily beside the cake hides a note: click it to slip the note out, click again to tuck it away.
+    const secret = $("#lilySecret");
+    if (C.lilies.secretNote) {
+      $("#lilySecretText").textContent = C.lilies.secretNote;
+      $("#cakeLily").addEventListener("click", () => secret.classList.toggle("in"));
+      secret.addEventListener("click", () => secret.classList.remove("in"));
+    } else secret.remove();
     $$(".cake-deco").forEach((d) => (d.innerHTML = d.dataset.art === "heart" ? A.heart() : A.sparkle()));
     $("#cakeTitle").innerHTML = k.titleLines.map((w) => tiles(w, "birth")).join("") + tiles(k.titleAccent, "day");
     $("#cakeLove").innerHTML = `<i>${A.heart()}</i><span>${esc(k.love)}</span><i>${A.heart()}</i>`;
