@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>for you ♡</title>
+  <link rel="preload" href="fonts/caveat-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/chewy-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Shared SVG filters: hand wobble, paper cut-out edge, soft sticker shadow -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <filter id="cutout" x="-12%" y="-12%" width="124%" height="124%">
+        <feMorphology in="SourceAlpha" operator="dilate" radius="5" result="fat"/>
+        <feFlood flood-color="#f8f3e7"/>
+        <feComposite in2="fat" operator="in" result="edge"/>
+        <feMerge><feMergeNode in="edge"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="softshadow" x="-10%" y="-10%" width="120%" height="130%">
+        <feDropShadow dx="0" dy="2.5" stdDeviation="2.2" flood-color="#50381a" flood-opacity=".3"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- The "table" everything sits on -->
+  <div class="desk" aria-hidden="true">
+    <div class="desk-light"></div>
+    <div class="desk-decor" id="deskDecor"></div>
+  </div>
+  <div class="ambient" id="ambient" aria-hidden="true"></div>
+
+  <main id="app">
+
+    <!-- ══ 1 · Birthday card + password lock ══ -->
+    <section class="screen active" id="screen-lock">
+      <div class="lock-layout">
+        <div class="bcard-stack drop-in" style="--i:0">
+          <div class="bcard-under"></div>
+          <div class="bcard" id="introCard"></div>
+        </div>
+
+        <div class="note lock-note drop-in" style="--i:3">
+          <span class="tape tape-a"></span>
+          <div class="torn" data-torn="top,right,bottom,left" data-paper="cream">
+            <div class="note-body">
+              <h1 class="hand-title" id="lockTitle"></h1>
+              <p class="hand" id="lockMessage"></p>
+
+              <div class="lock-row" id="lockRow">
+                <div class="lock-icon sticker" id="lockIcon"></div>
+                <div class="digits" role="group" aria-labelledby="digitsLabel">
+                  <input class="digit" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="digit 1">
+                  <input class="digit" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="digit 2">
+                  <input class="digit" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="digit 3">
+                  <input class="digit" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="digit 4">
+                </div>
+              </div>
+              <p class="tiny-label" id="digitsLabel"></p>
+              <p class="lock-feedback hand" id="lockFeedback" aria-live="polite">&nbsp;</p>
+
+              <button class="tag-btn" id="hintBtn" type="button"></button>
+              <ol class="hints" id="hints" aria-live="polite"></ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 1½ · Recording notice (shown before the card page) ══ -->
+    <section class="screen" id="screen-consent">
+      <div class="note consent-note drop-in" style="--i:0">
+        <span class="tape tape-a"></span>
+        <div class="torn" data-torn="top,right,bottom,left" data-paper="cream">
+          <div class="note-body center">
+            <div class="consent-art sticker" id="consentArt"></div>
+            <h2 class="hand-title" id="consentTitle"></h2>
+            <p class="hand" id="consentMessage"></p>
+            <p class="print small" id="consentPrivacy"></p>
+            <div class="btn-row">
+              <button class="tag-btn primary" id="consentYes" type="button"></button>
+              <button class="link-btn" id="consentNo" type="button"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 2 · Sealed card, questions, opening, message ══ -->
+    <section class="screen" id="screen-card">
+      <div class="scene" id="scene">
+
+        <div class="card-col">
+          <p class="hand instruction drop-in" style="--i:1" id="cardInstruction"></p>
+
+          <div class="gcard-wrap drop-in" style="--i:0" id="gcardWrap">
+            <div class="gshadow"></div>
+            <div class="gcard" id="gcard">
+              <div class="gback"></div>
+              <div class="gpage gright" id="pageRight"></div>
+              <div class="gcover">
+                <div class="gface gfront"><div class="bcard" id="coverCard"></div></div>
+                <div class="gface ginside" id="pageLeft"></div>
+              </div>
+              <div class="seals" id="seals"></div>
+            </div>
+          </div>
+
+          <div class="msg-controls" id="msgControls">
+            <button class="tag-btn" id="replayMsg" type="button"></button>
+            <button class="tag-btn" id="skipMsg" type="button"></button>
+          </div>
+        </div>
+
+        <div class="quiz-col drop-in" style="--i:3" id="quizCol">
+          <div class="maze" id="maze"></div>
+          <div class="note quiz-note">
+            <span class="tape tape-b"></span>
+            <div class="torn" data-torn="top,right,bottom,left" data-paper="cream">
+              <div class="note-body" id="quizBody"></div>
+            </div>
+            <div class="quiz-puppy sticker" id="quizPuppy"></div>
+            <div class="bubble hand" id="quizBubble"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Floating camera viewfinder -->
+      <aside class="viewfinder" id="viewfinder" hidden>
+        <span class="tape tape-b"></span>
+        <div class="vf-paper">
+          <div class="vf-frame">
+            <video id="vfVideo" autoplay muted playsinline></video>
+            <div class="vf-rec" id="vfRec"><i class="rec-dot"></i><span>REC</span><span id="vfTime">0:00</span></div>
+            <i class="vf-corner tl"></i><i class="vf-corner tr"></i><i class="vf-corner bl"></i><i class="vf-corner br"></i>
+          </div>
+          <p class="vf-caption hand" id="vfCaption"></p>
+          <div class="vf-actions" id="vfActions" hidden>
+            <button class="mini-btn" id="vfReplay" type="button">▸ replay</button>
+            <a class="mini-btn" id="vfDownload">↓ save</a>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <div class="toast hand" id="toast" role="status"><i class="rec-dot"></i><span id="toastText"></span></div>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <script src="js/config.js"></script>
+  <script src="js/art.js"></script>
+  <script src="js/paper.js"></script>
+  <script src="js/confetti.js"></script>
+  <script src="js/recorder.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
