@@ -38,7 +38,13 @@
     initReaction();
     initCake();
     P.tornify();
-    initIntro();
+
+    // Direct link: adding ?page=cake to the address opens straight on the cake page.
+    if (new URLSearchParams(location.search).get("page") === "cake") {
+      $("#scene").classList.add("reveal");   // so "read it again" opens the card without the questions
+      $("#seals").remove();
+      show("screen-cake");
+    } else initIntro();
 
     // Clicking any decoration makes it wiggle and scatter a few hearts.
     document.addEventListener("click", (e) => {
