@@ -133,10 +133,11 @@
     if (!I || !I.enabled) { show("screen-lock"); focusLock(); return; }
     const screen = $("#screen-intro");
 
-    // "Hey!" in big cut-out letters
+    const squiggle = `<svg class="squiggle" viewBox="0 0 600 40" aria-hidden="true"><path d="M8,22 C60,4 90,38 150,20 S250,6 310,22 S420,36 470,18 S560,10 592,22" fill="none" stroke="#a9c9ef" stroke-width="7" stroke-linecap="round" pathLength="100"/></svg>`;
+
+    // "Hey!" in the same big handwriting as the line that follows
     $("#introHey").innerHTML =
-      `<div class="hey">${[...I.hello].map((ch, i) =>
-        `<span class="tile tile-day sticker" style="--r:${[-6, 4, -3, 7, -4][i % 5]}deg;--y:${[0, 1.5, -1, 0.8][i % 4]}em;--k:${i}"><b>${esc(ch)}</b></span>`).join("")}</div>
+      `<p class="day-line hey-line">${I.hello.split(/\s+/).map((w, i) => `<span class="w" style="--k:${i}">${esc(w)}</span>`).join(" ")}</p>
        <span class="intro-deco ink n-h1">${A.heart()}</span><span class="intro-deco ink n-s1">${A.sparkle()}</span><span class="intro-deco ink n-s2">${A.sparkle()}</span>`;
 
     // "It's your day today", one word at a time
@@ -145,16 +146,16 @@
     let hiStart = -1;
     for (let i = 0; i + hi.length <= words.length && hi.length; i++)
       if (hi.every((w, k) => words[i + k].toLowerCase() === w.toLowerCase())) { hiStart = i; break; }
-    $("#introLine").innerHTML =
-      `<p class="day-line">${words.map((w, i) =>
-        `<span class="w${i >= hiStart && hiStart >= 0 && i < hiStart + hi.length ? " blue" : ""}" style="--k:${i}">${esc(w)}</span>`).join(" ")}</p>
-       <svg class="squiggle" viewBox="0 0 600 40" aria-hidden="true"><path d="M8,22 C60,4 90,38 150,20 S250,6 310,22 S420,36 470,18 S560,10 592,22" fill="none" stroke="#a9c9ef" stroke-width="7" stroke-linecap="round" pathLength="100"/></svg>
+    const lineHtml =
+      `<div class="line-wrap"><p class="day-line">${words.map((w, i) =>
+        `<span class="w${i >= hiStart && hiStart >= 0 && i < hiStart + hi.length ? " blue" : ""}" style="--k:${i}">${esc(w)}</span>`).join(" ")}</p>${squiggle}</div>
        <span class="intro-deco ink n-h2">${A.heart()}</span><span class="intro-deco ink n-s3">${A.sparkle()}</span>`;
 
-    // The date: one paper cube per digit, rolling down to today's number
+    // The date: one paper cube per digit, rolling down to today's number.
+    // It shares the page with the line, which shrinks and moves up first.
     const groups = I.date.split(/\D+/).filter(Boolean);
     let n = 0;
-    $("#introDate").innerHTML =
+    $("#introLine").innerHTML = lineHtml +
       `<div class="cubes">${groups.map((g, gi) =>
         `<div class="cube-group${gi === groups.length - 1 ? " accent" : ""}"><div class="cube-pair">${[...g].map((d) => {
           const k = n++, f = (o) => (+d + o) % 10;
@@ -170,18 +171,22 @@
     const onSkip = () => skip && skip();
     screen.addEventListener("click", onSkip);
     addEventListener("keydown", onSkip);
-    const stages = ["#introHey", "#introLine", "#introDate"].map((s) => $(s));
-    const play = async (i, ms) => {
-      stages[i].classList.add("on");
-      await hold(ms);
-      stages[i].classList.add("off");
-      await wait(650);
-    };
+    const hey = $("#introHey"), line = $("#introLine");
     (async () => {
       await wait(500);
-      await play(0, 2700);
-      await play(1, 1100 + words.length * 260 + 2300);
-      await play(2, 2600 + cubeCount * 170 + 2800);
+      hey.classList.add("on");
+      await hold(2900);
+      hey.classList.add("off");
+      await wait(650);
+
+      line.classList.add("on");
+      await hold(5000);                 // the line has the page to itself for five seconds…
+      line.classList.add("docked");     // …then shrinks and moves to the top
+      await wait(900);
+      line.classList.add("rolling");    // and the date cubes roll in underneath
+      await hold(2600 + cubeCount * 170 + 3000);
+      line.classList.add("off");
+      await wait(650);
       screen.removeEventListener("click", onSkip);
       removeEventListener("keydown", onSkip);
       show("screen-lock");

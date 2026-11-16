@@ -165,40 +165,37 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .n-s2 { right: 27%; bottom: 22%; width: clamp(18px, 2vw, 30px); }
 .n-h2 { right: 14%; top: 26%; width: clamp(28px, 3.4vw, 50px); transform: rotate(12deg); } .n-s3 { left: 13%; bottom: 27%; width: clamp(26px, 3vw, 46px); }
 
-.hey { font-size: min(9.6px, .8vw, 1.5vh); display: flex; gap: 3em; }
-.intro-stage.on .hey .tile { animation: tileIn .85s var(--ease) backwards; animation-delay: calc(var(--k) * 150ms + 150ms); }
-@keyframes tileIn {
-  from { opacity: 0; transform: translateY(-70px) rotate(-24deg) scale(.55); }
-  60% { opacity: 1; transform: translateY(8px) rotate(calc(var(--r) * 1.6)) scale(1.04); }
-}
-
 .day-line { margin: 0; font-family: var(--hand); font-weight: 700; font-size: clamp(54px, 9vw, 140px); line-height: 1; text-align: center; color: var(--ink); transform: rotate(-2deg); }
 .day-line .w { display: inline-block; }
 .day-line .blue { color: var(--blue-d); }
 .intro-stage.on .day-line .w { animation: wordIn .8s var(--ease) backwards; animation-delay: calc(var(--k) * 260ms + 200ms); }
 @keyframes wordIn { from { opacity: 0; transform: translateY(.35em) rotate(4deg); } }
+.hey-line { font-size: clamp(110px, 21vw, 320px); color: var(--blue-d); }
+.line-wrap { position: absolute; left: 0; right: 0; top: 50%; display: flex; flex-direction: column; align-items: center; padding: 0 4vw;
+  transform: translateY(-50%); transition: transform 1.3s cubic-bezier(.5, .05, .2, 1); will-change: transform; }
+.docked .line-wrap { transform: translateY(calc(-50% - 31vh)) scale(.56); }
 .squiggle { width: min(56vw, 760px); margin-top: 1.5vh; transform: rotate(-2deg); overflow: visible; }
 .squiggle path { stroke-dasharray: 100; stroke-dashoffset: 100; }
 .intro-stage.on .squiggle path { animation: draw 1.3s ease-out 1.4s forwards; }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 
 /* the date on paper cubes */
-.cubes { --s: clamp(58px, 9.4vw, 136px); display: flex; align-items: flex-start; gap: calc(var(--s) * .16); }
+.cubes { --s: clamp(58px, 9.4vw, 136px); position: absolute; left: 50%; top: 54%; transform: translate(-50%, -50%); display: flex; align-items: flex-start; gap: calc(var(--s) * .16); }
 .cube-group { display: flex; flex-direction: column; align-items: center; gap: calc(var(--s) * .3); }
 .cube-pair { display: flex; gap: calc(var(--s) * .12); }
 .cubes .cube-sep { width: calc(var(--s) * .24); margin-top: calc(var(--s) * .38); opacity: 0; transition: opacity .8s ease 2.6s; }
-.intro-stage.on .cube-sep { opacity: .9; }
+.intro-stage.rolling .cube-sep { opacity: .9; }
 .cube-label { font-family: var(--hand); font-weight: 700; font-size: calc(var(--s) * .36); line-height: 1; color: var(--ink-soft); opacity: 0; transform: translateY(8px) rotate(-3deg);
   transition: opacity .8s ease, transform .8s var(--ease); transition-delay: calc(2.9s + var(--k) * .2s); }
-.intro-stage.on .cube-label { opacity: 1; transform: rotate(-3deg); }
+.intro-stage.rolling .cube-label { opacity: 1; transform: rotate(-3deg); }
 .cube-slot { position: relative; width: var(--s); height: var(--s); perspective: calc(var(--s) * 7); }
 .cube-slot::after { content: ""; position: absolute; left: -4%; right: -4%; bottom: -17%; height: 22%; opacity: 0;
   background: radial-gradient(closest-side, rgba(var(--shadow), .42), transparent); }
-.intro-stage.on .cube-slot::after { animation: cubeShadow 2.5s ease-in both; animation-delay: calc(var(--k) * 170ms + 300ms); }
+.intro-stage.rolling .cube-slot::after { animation: cubeShadow 2.5s ease-in both; animation-delay: calc(var(--k) * 170ms + 300ms); }
 @keyframes cubeShadow { 0%, 45% { opacity: 0; transform: scale(.4); } 100% { opacity: 1; transform: scale(1); } }
 .cube { --h: calc(var(--s) / 2); position: absolute; inset: 0; transform-style: preserve-3d;
   transform: translateY(-110vh) translateZ(calc(var(--h) * -1)) rotateX(0deg); }
-.intro-stage.on .cube { animation: cubeRoll 2.5s cubic-bezier(.2, .7, .25, 1) both; animation-delay: calc(var(--k) * 170ms + 300ms); }
+.intro-stage.rolling .cube { animation: cubeRoll 2.5s cubic-bezier(.2, .7, .25, 1) both; animation-delay: calc(var(--k) * 170ms + 300ms); }
 @keyframes cubeRoll {
   0% { transform: translateY(-110vh) translateZ(calc(var(--h) * -1)) rotateX(calc(var(--spin) * 1deg)); }
   62% { transform: translateY(0) translateZ(calc(var(--h) * -1)) rotateX(-22deg); }
@@ -207,7 +204,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
   100% { transform: translateY(0) translateZ(calc(var(--h) * -1)) rotateX(0deg); }
 }
 .cube b { position: absolute; inset: 0; display: grid; place-items: center; backface-visibility: hidden;
-  font-family: var(--cut); font-weight: 400; font-size: calc(var(--s) * .7); line-height: 1; color: #1d1c1b;
+  font-family: var(--print); font-weight: 400; font-size: calc(var(--s) * .82); line-height: 1; color: #1d1c1b;
   background-color: #fdf9ef; background-image: var(--grain); border: calc(var(--s) * .05) solid #b7cfee; }
 .accent .cube b { color: var(--blue); border-color: #1d1c1b; }
 .cube .f1 { transform: translateZ(var(--h)); }
