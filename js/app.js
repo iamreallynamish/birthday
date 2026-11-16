@@ -38,6 +38,7 @@
     initReaction();
     initCake();
     P.tornify();
+    initIntro();
 
     // Clicking any decoration makes it wiggle and scatter a few hearts.
     document.addEventListener("click", (e) => {
@@ -122,7 +123,70 @@
       label();
     });
     label();
-    setTimeout(() => digits[0].focus({ preventScroll: true }), 900);
+    focusLock = () => setTimeout(() => digits[0].focus({ preventScroll: true }), 900);
+  }
+
+  /* ═════════ 0 · Opening sequence ═════════ */
+  let focusLock = () => {};
+  function initIntro() {
+    const I = C.intro;
+    if (!I || !I.enabled) { show("screen-lock"); focusLock(); return; }
+    const screen = $("#screen-intro");
+
+    // "Hey!" in big cut-out letters
+    $("#introHey").innerHTML =
+      `<div class="hey">${[...I.hello].map((ch, i) =>
+        `<span class="tile tile-day sticker" style="--r:${[-6, 4, -3, 7, -4][i % 5]}deg;--y:${[0, 1.5, -1, 0.8][i % 4]}em;--k:${i}"><b>${esc(ch)}</b></span>`).join("")}</div>
+       <span class="intro-deco ink n-h1">${A.heart()}</span><span class="intro-deco ink n-s1">${A.sparkle()}</span><span class="intro-deco ink n-s2">${A.sparkle()}</span>`;
+
+    // "It's your day today", one word at a time
+    const hi = (I.highlight || "").split(/\s+/).filter(Boolean);
+    const words = I.line.split(/\s+/);
+    let hiStart = -1;
+    for (let i = 0; i + hi.length <= words.length && hi.length; i++)
+      if (hi.every((w, k) => words[i + k].toLowerCase() === w.toLowerCase())) { hiStart = i; break; }
+    $("#introLine").innerHTML =
+      `<p class="day-line">${words.map((w, i) =>
+        `<span class="w${i >= hiStart && hiStart >= 0 && i < hiStart + hi.length ? " blue" : ""}" style="--k:${i}">${esc(w)}</span>`).join(" ")}</p>
+       <svg class="squiggle" viewBox="0 0 600 40" aria-hidden="true"><path d="M8,22 C60,4 90,38 150,20 S250,6 310,22 S420,36 470,18 S560,10 592,22" fill="none" stroke="#a9c9ef" stroke-width="7" stroke-linecap="round" pathLength="100"/></svg>
+       <span class="intro-deco ink n-h2">${A.heart()}</span><span class="intro-deco ink n-s3">${A.sparkle()}</span>`;
+
+    // The date: one paper cube per digit, rolling down to today's number
+    const groups = I.date.split(/\D+/).filter(Boolean);
+    let n = 0;
+    $("#introDate").innerHTML =
+      `<div class="cubes">${groups.map((g, gi) =>
+        `<div class="cube-group${gi === groups.length - 1 ? " accent" : ""}"><div class="cube-pair">${[...g].map((d) => {
+          const k = n++, f = (o) => (+d + o) % 10;
+          return `<div class="cube-slot" style="--k:${k};--spin:${1080 + (k % 3) * 360}"><div class="cube">` +
+            `<b class="f1">${d}</b><b class="f2">${f(1)}</b><b class="f3">${f(2)}</b><b class="f4">${f(9)}</b><b class="f5"></b><b class="f6"></b></div></div>`;
+        }).join("")}</div><span class="cube-label" style="--k:${gi}">${esc((I.dateLabels || [])[gi] || "")}</span></div>`).join(
+        `<span class="cube-sep ink">${A.heart()}</span>`)}</div>`;
+    const cubeCount = n;
+
+    // Each beat holds for a moment; a click or key press moves on early.
+    let skip = null;
+    const hold = (ms) => new Promise((res) => { const t = setTimeout(res, ms); skip = () => { clearTimeout(t); res(); }; });
+    const onSkip = () => skip && skip();
+    screen.addEventListener("click", onSkip);
+    addEventListener("keydown", onSkip);
+    const stages = ["#introHey", "#introLine", "#introDate"].map((s) => $(s));
+    const play = async (i, ms) => {
+      stages[i].classList.add("on");
+      await hold(ms);
+      stages[i].classList.add("off");
+      await wait(650);
+    };
+    (async () => {
+      await wait(500);
+      await play(0, 2700);
+      await play(1, 1100 + words.length * 260 + 2300);
+      await play(2, 2600 + cubeCount * 170 + 2800);
+      screen.removeEventListener("click", onSkip);
+      removeEventListener("keydown", onSkip);
+      show("screen-lock");
+      focusLock();
+    })();
   }
 
   /* ═════════ 1½ · Recording notice ═════════ */

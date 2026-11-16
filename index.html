@@ -39,7 +39,14 @@
   <main id="app">
 
     <!-- ══ 1 · Birthday card + password lock ══ -->
-    <section class="screen active" id="screen-lock">
+    <!-- ══ 0 · Opening: Hey! → It's your day today → the date ══ -->
+    <section class="screen active" id="screen-intro">
+      <div class="intro-stage" id="introHey"></div>
+      <div class="intro-stage" id="introLine"></div>
+      <div class="intro-stage" id="introDate"></div>
+    </section>
+
+    <section class="screen" id="screen-lock">
       <div class="lock-layout">
         <div class="bcard-stack drop-in" style="--i:0">
           <div class="bcard-under"></div>

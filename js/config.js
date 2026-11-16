@@ -12,6 +12,18 @@ window.BIRTHDAY_CONFIG = {
   herName: "[Her name]",
   yourName: "[Your name]",
 
+  /* ── Opening · big text, then the date rolls in on cubes ───────── */
+  intro: {
+    enabled: true,
+    hello: "Hey!",
+    line: "It's your day today",
+    highlight: "your day", // these words are written in blue
+    // One cube per digit; any other character becomes a gap between groups.
+    // "16/11/26" gives six cubes. Write "16/11/2026" if you'd like eight.
+    date: "16/11/26",
+    dateLabels: ["day", "month", "year"],
+  },
+
   /* ── Screen 1 · the lock ───────────────────────────────────────── */
   password: "2107",
 
