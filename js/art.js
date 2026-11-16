@@ -123,6 +123,78 @@
         "padlock");
     },
 
+    /* A little stem of white lilies. */
+    lily() {
+      const petal = "M0,0 C-17,-20 -15,-52 0,-72 C15,-52 17,-20 0,0 Z";
+      const bloom = (cx, cy, s, rot) => {
+        let g = "";
+        [30, 150, 270, 90, 210, 330].forEach((a) => {
+          g += `<g transform="rotate(${a})"><path d="${petal}" fill="#fff" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>` +
+            `<path d="M0,-14 L0,-50" stroke="${BLUE_L}" stroke-width="3" stroke-linecap="round" opacity=".8"/></g>`;
+        });
+        [18, 92, 168, 250, 318].forEach((a) => {
+          g += `<g transform="rotate(${a})"><path d="M0,0 L0,-24" stroke="${GREEN}" stroke-width="2" stroke-linecap="round"/>` +
+            `<ellipse cx="0" cy="-27" rx="3.2" ry="6" fill="#d9a441"/></g>`;
+        });
+        return `<g transform="translate(${cx},${cy}) rotate(${rot}) scale(${s},${(s * 0.88).toFixed(2)})">${g}</g>`;
+      };
+      const stem = `fill="none" stroke="${GREEN}" stroke-width="6" stroke-linecap="round"`;
+      const leaf = `fill="#a9d8bf" stroke="${GREEN}" stroke-width="3" stroke-linejoin="round"`;
+      return sticker("-14 -6 228 282",
+        `<path d="M100,262 C98,206 96,152 82,96" ${stem}/><path d="M97,196 C108,158 124,132 140,108" ${stem}/>` +
+        `<path d="M97,214 C86,194 72,180 58,168" ${stem} stroke-width="4.5"/>` +
+        `<path d="M100,240 C70,220 50,196 40,166 C66,180 88,206 100,240 Z" ${leaf}/>` +
+        `<path d="M100,250 C130,230 150,206 160,178 C134,192 112,216 100,250 Z" ${leaf}/>` +
+        `<path d="M58,168 C40,160 34,138 44,120 C58,132 64,150 58,168 Z" fill="#fff" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>` +
+        bloom(82, 84, 1, -12) + bloom(144, 98, 0.8, 24),
+        "lily");
+    },
+
+    /* Curved pointing arrow, drawn in pen. */
+    arrow() {
+      return doodle("0 0 90 56",
+        `<path d="M6,44 C22,10 54,6 78,24" fill="none" stroke="#5b83c9" stroke-width="3.4" stroke-linecap="round"/>` +
+        `<path d="M64,12 L79,25 L61,31" fill="none" stroke="#5b83c9" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>`, "arrow");
+    },
+
+    /* Two-tier birthday cake with number candles. Flames sit outside the
+       cut-out group so they can flicker and be blown out. */
+    cake(digits = "18") {
+      const line = `stroke="${INK}" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"`;
+      const drips = (x, y, w, n, depth) => {
+        let d = `M${x},${y + 16} Q${x},${y} ${x + 14},${y} H${x + w - 14} Q${x + w},${y} ${x + w},${y + 16} V${y + 30}`;
+        const seg = w / n;
+        for (let i = 0; i < n; i++) d += ` q${(-seg / 2).toFixed(1)},${depth[i % depth.length]} ${(-seg).toFixed(1)},0`;
+        return d + " Z";
+      };
+      const chars = [...String(digits)], gap = 76, x0 = 200 - ((chars.length - 1) * gap) / 2;
+      let candles = "", flames = "";
+      chars.forEach((ch, i) => {
+        const x = x0 + i * gap;
+        candles +=
+          `<path d="M${x},88 L${x},70" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>` +
+          `<text x="${x}" y="176" text-anchor="middle" font-family="Chewy, Caveat, cursive" font-size="118" fill="${BLUE_L}" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round">${ch}</text>` +
+          `<text x="${x}" y="176" text-anchor="middle" font-family="Chewy, Caveat, cursive" font-size="118" fill="none" stroke="#fff" stroke-width="5" stroke-dasharray="3 26" opacity=".7">${ch}</text>`;
+        flames +=
+          `<g transform="translate(${x},68)">` +
+          `<circle class="glow" r="34" cy="-14" fill="#ffe08a" opacity=".32"/>` +
+          `<g class="flame"><path d="M0,-34 C13,-14 15,0 0,8 C-15,0 -13,-14 0,-34 Z" fill="#ffd25e" stroke="#f0a23a" stroke-width="2.4" stroke-linejoin="round"/>` +
+          `<path d="M0,-16 C6,-8 6,0 0,4 C-6,0 -6,-8 0,-16 Z" fill="#fff6d2"/></g>` +
+          `<path class="smoke" d="M0,-4 q-9,-14 0,-28 q9,-13 0,-27 q-7,-10 0,-20" fill="none" stroke="#b5ad9d" stroke-width="3.2" stroke-linecap="round"/></g>`;
+      });
+      const hearts = [110, 155, 200, 245, 290].map((x) =>
+        `<path transform="translate(${x - 11},332) scale(.22)" d="${Art.heartPath}" fill="${BLUE}" opacity=".9"/>`).join("");
+      return `<svg class="art cake" viewBox="0 0 400 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="birthday cake">` +
+        `<g filter="url(#cutout)"><g filter="url(#wobble)">` +
+        `<ellipse cx="200" cy="404" rx="184" ry="22" fill="${CREAM}" ${line}/>` +
+        `<rect x="48" y="272" width="304" height="130" rx="14" fill="#fff" ${line}/>` +
+        `<path d="M48,372 H352" stroke="${BLUE_L}" stroke-width="12" opacity=".6"/>${hearts}` +
+        `<path d="${drips(48, 272, 304, 12, [26, 16, 34, 20])}" fill="${BLUE_L}" ${line}/>` +
+        `<rect x="98" y="172" width="204" height="106" rx="12" fill="#fff" ${line}/>` +
+        `<path d="${drips(98, 172, 204, 8, [22, 34, 16, 28])}" fill="${BLUE}" ${line}/>` +
+        candles + `</g></g><g class="flames">${flames}</g></svg>`;
+    },
+
     /* Tiny camera doodle for the recording note. */
     camera() {
       return sticker("0 0 120 96",

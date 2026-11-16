@@ -35,6 +35,9 @@
     initConsent();
     initQuiz();
     initMessageControls();
+    initReaction();
+    initCake();
+    P.tornify();
 
     // Clicking any decoration makes it wiggle and scatter a few hearts.
     document.addEventListener("click", (e) => {
@@ -168,11 +171,13 @@
     setTimeout(() => t.classList.remove("in"), ms);
   }
 
+  let savedRecording = null; // { url, ext } once the camera has stopped
   async function finishRecording() {
-    if (!R.isRecording()) return;
+    if (!R.isRecording()) return savedRecording;
     const result = await R.stop();
     const vf = $("#viewfinder"), video = $("#vfVideo");
-    if (!result) { vf.classList.remove("in"); return; }
+    if (!result) { vf.classList.remove("in"); return null; }
+    savedRecording = result;
     vf.classList.add("saved");
     video.srcObject = null;
     video.src = result.url;
@@ -193,6 +198,7 @@
       video.play().catch(() => {});
       replay.textContent = "× close";
     });
+    return savedRecording;
   }
 
   /* ═════════ Seals + maze ═════════ */
@@ -322,9 +328,91 @@
     await wait(3100);
     scene.classList.add("opened");
     fitMessage();
-    await finishRecording();                // stop the camera once the card is open
-    $("#msgControls").classList.add("in");
+    $("#msgControls").classList.add("in");  // the camera keeps rolling while she reads
     typeMessage();
+  }
+
+  /* ═════════ Closing the card → reaction video → cake ═════════ */
+  let cardBusy = false, reactionShown = false;
+  async function closeCard() {
+    if (cardBusy) return; cardBusy = true;
+    const scene = $("#scene");
+    typingRun++;
+    $("#msgControls").classList.remove("in");
+    scene.classList.add("closing");
+    scene.classList.remove("open", "opened", "typed");
+    await wait(2700);
+    scene.classList.remove("closing");
+    const rec = await finishRecording();    // stop the camera once the card is shut
+    cardBusy = false;
+    if (rec && !reactionShown) showReaction();
+    else show("screen-cake");
+  }
+
+  async function reopenCard() {
+    if (cardBusy) return; cardBusy = true;
+    const scene = $("#scene");
+    show("screen-card");
+    await wait(900);
+    scene.classList.add("open");
+    await wait(3100);
+    scene.classList.add("opened");
+    fitMessage();
+    showWholeMessage();
+    $("#msgControls").classList.add("in");
+    cardBusy = false;
+  }
+
+  function initReaction() {
+    const rx = C.reaction;
+    $("#reactionCaption").textContent = rx.caption;
+    $("#reactionSave").textContent = rx.saveButton;
+    $("#reactionNext").textContent = rx.nextButton;
+    $("#reactionNext").addEventListener("click", () => {
+      $("#reactionVideo").pause();
+      show("screen-cake");
+    });
+  }
+  function showReaction() {
+    if (!savedRecording) return show("screen-cake");
+    reactionShown = true;
+    const video = $("#reactionVideo"), save = $("#reactionSave");
+    if (video.src !== savedRecording.url) video.src = savedRecording.url;
+    save.href = savedRecording.url;
+    save.download = `${C.recording.fileName}.${savedRecording.ext}`;
+    show("screen-reaction");
+    video.currentTime = 0;
+    setTimeout(() => video.play().catch(() => {}), 900);
+  }
+
+  function initCake() {
+    const k = C.cake;
+    const tiles = (word, kind) => `<div class="word-row">${[...word].map((ch, i) =>
+      `<span class="tile tile-${kind} sticker" style="--r:${[-4, 3, -2, 4, -3, 5, -5, 2][(i * 3 + word.length) % 8]}deg;--y:${[0, 1, -0.8, 1.4, 0.4][i % 5]}em"><b>${esc(ch)}</b></span>`).join("")}</div>`;
+    $("#cakeArt").innerHTML = A.cake(k.candles);
+    $("#cakeLily").innerHTML = A.lily();
+    $$(".cake-deco").forEach((d) => (d.innerHTML = d.dataset.art === "heart" ? A.heart() : A.sparkle()));
+    $("#cakeTitle").innerHTML = k.titleLines.map((w) => tiles(w, "birth")).join("") + tiles(k.titleAccent, "day");
+    $("#cakeLove").innerHTML = `<i>${A.heart()}</i><span>${esc(k.love)}</span><i>${A.heart()}</i>`;
+    $("#blowBtn").textContent = k.blowButton;
+    $("#againQ").textContent = k.againQuestion;
+    $("#againYes").textContent = k.againYes;
+    $("#againReaction").textContent = k.againReaction;
+
+    $("#blowBtn").addEventListener("click", async () => {
+      const action = $("#cakeAction");
+      $("#blowBtn").disabled = true;
+      $("#cakePage").classList.add("blown");            // flames out, smoke curls up
+      await wait(500);
+      window.Confetti.launch(4600);
+      action.innerHTML = `<p class="hand wish">${esc(k.wish)}</p>`;
+      await wait(2600);
+      action.hidden = true;
+      $("#againReaction").hidden = !savedRecording;
+      $("#again").hidden = false;
+    });
+    $("#againYes").addEventListener("click", reopenCard);
+    $("#againReaction").addEventListener("click", showReaction);
   }
 
   /* ═════════ Two-page message ═════════ */
@@ -340,6 +428,8 @@
        <div class="pg-deco ink d-s1 sticker">${A.sparkle()}</div>
        <div class="pg-deco ink d-h1 sticker">${A.heart()}</div>
        <div class="pg-deco ink d-s2 sticker">${A.sparkle()}</div>
+       <div class="pg-deco d-lily sticker">${A.lily()}</div>
+       <div class="pg-deco lily-note"><span>${esc(C.lilies.note)}</span><i>${A.arrow()}</i></div>
        <div class="pg-text pg-text-left">${line("greet", m.greeting)}${m.leftPage.map((t) => line("para", t)).join("")}</div>`;
     $("#pageRight").innerHTML =
       `<div class="pg-paper paper-cream">
@@ -353,6 +443,7 @@
        <div class="pg-text pg-text-right">${m.rightPage.map((t) => line("para", t)).join("")}${line("sign", m.signOff)}${line("sign name", m.signature)}</div>`;
     $("#replayMsg").textContent = m.replayButton;
     $("#skipMsg").textContent = m.skipButton;
+    $("#closeCard").textContent = m.closeButton;
   }
 
   // If a page is too full, shrink the handwriting a little until it fits.
@@ -381,6 +472,7 @@
     await wait(500);
     for (const p of lines) {
       const text = p.dataset.text;
+      if (run !== typingRun) return;
       p.classList.add("writing");
       for (let i = 1; i <= text.length; i++) {
         if (run !== typingRun) return;
@@ -402,6 +494,7 @@
   function initMessageControls() {
     $("#replayMsg").addEventListener("click", typeMessage);
     $("#skipMsg").addEventListener("click", showWholeMessage);
+    $("#closeCard").addEventListener("click", closeCard);
     addEventListener("resize", () => $("#scene").classList.contains("opened") && fitMessage());
   }
 

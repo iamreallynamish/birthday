@@ -50,7 +50,7 @@ window.BIRTHDAY_CONFIG = {
       "When the next page opens, your reaction will be recorded automatically " +
       "using your camera and microphone, so this moment can be kept as a little memory.",
     consentPrivacy:
-      "It stays only on this device. Nothing is uploaded anywhere, and you can replay or save it at the end.",
+      "It stays only on this device. Nothing is uploaded anywhere, and you'll get to watch and save it at the end.",
     consentYes: "okay, I'm ready ♡",
     consentNo: "continue without recording",
     toast: "A little memory is being recorded ♡",
@@ -144,6 +144,32 @@ window.BIRTHDAY_CONFIG = {
 
     replayButton: "↺ write it again",
     skipButton: "show the whole letter",
+    closeButton: "close the card ♡", // takes her on to her reaction video and the cake
+  },
+
+  /* ── Lilies (her favourite flowers) ────────────────────────────── */
+  lilies: {
+    note: "lilies, because they're your favourite ♡",
+  },
+
+  /* ── After the card closes · her reaction video ────────────────── */
+  reaction: {
+    caption: "this was you, a minute ago ♡",
+    saveButton: "↓ keep this video",
+    nextButton: "one more thing… ♡",
+  },
+
+  /* ── The cake ──────────────────────────────────────────────────── */
+  cake: {
+    candles: "18", // one number candle per digit
+    titleLines: ["hAppY", "bIrThDaY"], // cut-out letters, black on blue-edged paper
+    titleAccent: "baby", // cut-out letters, blue on black-edged paper
+    love: "i love you",
+    blowButton: "blow out the candles",
+    wish: "make a wish ♡",
+    againQuestion: "do you want to read it again?",
+    againYes: "yes, again ♡",
+    againReaction: "watch my reaction again",
   },
 
   /* ── Typing animation speed ────────────────────────────────────── */

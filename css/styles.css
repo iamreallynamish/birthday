@@ -341,15 +341,15 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .pg-strip-corner { position: absolute; left: 58%; top: 74%; width: 60%; height: 44%; transform: rotate(-14deg); }
 .pg-deco { position: absolute; z-index: 2; }
 .d-bow { left: -5em; top: -4em; width: 30em; transform: rotate(-12deg); filter: drop-shadow(0 .4em .4em rgba(var(--shadow), .3)); }
-.d-cherries { right: 6em; bottom: 5em; width: 17em; transform: rotate(8deg); filter: drop-shadow(0 .3em .3em rgba(var(--shadow), .3)); }
+.d-cherries { left: 6em; bottom: 4em; width: 15em; transform: rotate(8deg); filter: drop-shadow(0 .3em .3em rgba(var(--shadow), .3)); }
 .d-puppy { right: 1em; bottom: 3em; width: 30em; transform: rotate(-4deg); filter: drop-shadow(0 .4em .4em rgba(var(--shadow), .3)); }
 .d-s1 { right: 12em; top: 17em; width: 4em; } .d-h1 { right: 5em; top: 20em; width: 4.4em; transform: rotate(12deg); }
-.d-s2 { left: 8em; bottom: 9em; width: 3.4em; }
+.d-s2 { left: 4em; bottom: 25em; width: 3.4em; }
 .d-h2 { right: 9em; top: 6em; width: 5em; transform: rotate(10deg); } .d-s3 { right: 16em; top: 9em; width: 3.2em; }
 .d-s4 { left: 8em; bottom: 8em; width: 4em; } .d-h3 { left: 14em; bottom: 5em; width: 3.4em; transform: rotate(-12deg); }
 
 .pg-text { --mfs: 6em; position: absolute; z-index: 1; overflow: hidden; }
-.pg-text-left { inset: 21em 9em 24em 10em; }
+.pg-text-left { inset: 21em 9em 32em 10em; }
 .pg-text-right { inset: 13em 10em 30em 11em; }
 .ln { font-family: var(--hand); font-size: var(--mfs); line-height: 1.22; margin: 0 0 .5em; color: #33312e; }
 .ln.greet { font-weight: 700; font-size: calc(var(--mfs) * 1.3); color: var(--blue-d); margin-bottom: .35em; }
@@ -362,6 +362,61 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .msg-controls { display: flex; gap: 22px; height: 40px; opacity: 0; pointer-events: none; transform: translateY(-8px); transition: opacity .8s, transform .8s var(--ease); }
 .msg-controls.in { opacity: 1; pointer-events: auto; transform: none; }
 .msg-controls .tag-btn:nth-child(2) { transform: rotate(1.4deg); }
+.msg-controls .tag-btn:nth-child(3) { transform: rotate(-.6deg); }
+
+/* lilies + the little note that points at them */
+.d-lily { right: 2em; bottom: 1em; width: 25em; transform: rotate(7deg); filter: drop-shadow(0 .4em .4em rgba(var(--shadow), .3)); }
+.lily-note { right: 27em; bottom: 4.5em; width: 38em; text-align: right; transform: rotate(-3deg); opacity: 0; transition: opacity 1.2s ease .5s; pointer-events: none; }
+.lily-note span { display: block; font-family: var(--hand); font-weight: 700; font-size: 4.3em; line-height: 1.05; color: var(--blue-d); }
+.lily-note i { display: block; width: 11em; margin: .6em 1em 0 auto; }
+.scene.typed .lily-note { opacity: 1; }
+
+/* the card closes again */
+.scene.closing .gcover { animation: coverClose 2.6s cubic-bezier(.5, .02, .2, 1) forwards; }
+@keyframes coverClose { from { transform: rotateY(-180deg); } to { transform: rotateY(0); } }
+
+/* ══ Her reaction, taped down like a photo ════════════════════ */
+a.tag-btn { display: inline-block; text-decoration: none; cursor: pointer; }
+.reaction { display: flex; flex-direction: column; align-items: center; gap: 26px; margin: auto; }
+.reaction-photo { position: relative; transform: rotate(-1.5deg); filter: drop-shadow(0 12px 18px rgba(var(--shadow), .35)); }
+.reaction-paper { padding: 14px 14px 8px; width: min(640px, 86vw, calc((100vh - 240px) * 1.333)); background-color: #fffdf6; background-image: var(--grain); }
+.reaction-paper video { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: #262320; }
+.reaction-caption { font-size: 28px; text-align: center; margin: 8px 0 2px; color: var(--ink-soft); }
+.reaction .btn-row { margin-top: 0; }
+
+/* ══ The cake ═════════════════════════════════════════════════ */
+.cake-page { width: min(1010px, 92vw); transform: rotate(-.6deg); margin: auto; }
+.cake-bg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.cake-strip { position: absolute; left: -4%; top: -8%; width: 45%; height: 116%; transform: rotate(2.5deg); }
+.cake-strip .paper-gingham { --gs: 42px; }
+.cake-layout { position: relative; display: flex; align-items: center; gap: 44px; padding: 40px 52px 44px 40px; }
+.cake-side { position: relative; flex: none; width: min(430px, 37vw, 60vh); }
+.cake-art { filter: drop-shadow(0 8px 8px rgba(var(--shadow), .3)); }
+.cake-lily { position: absolute; right: -17%; bottom: -3%; width: 36%; transform: rotate(11deg); filter: drop-shadow(0 4px 4px rgba(var(--shadow), .3)); }
+.cake-deco { position: absolute; }
+.k-h1 { left: 4%; top: 10%; width: 8%; transform: rotate(-12deg); } .k-s1 { right: 2%; top: 6%; width: 7%; } .k-s2 { left: 0; top: 34%; width: 5%; }
+.cake-words { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.word-rows { font-size: min(3.1px, .3vw); display: flex; flex-direction: column; align-items: center; gap: 3.6em; }
+.word-row { display: flex; gap: 1.3em; }
+.love { display: flex; align-items: center; gap: 14px; margin: 8px 0 0; font-family: var(--hand); font-weight: 700; font-size: 54px; line-height: 1; color: var(--blue-d); transform: rotate(-2deg); }
+.love i { width: 26px; } .love i:last-child { transform: rotate(14deg); }
+.cake-action { min-height: 58px; display: grid; place-items: center; margin-top: 6px; }
+.wish { font-size: 32px; color: var(--ink-soft); animation: slip .7s var(--ease) both; }
+.again { text-align: center; animation: slip .8s var(--ease) both; margin-top: 6px; }
+.again-q { font-size: 31px; font-weight: 700; }
+.again .btn-row { margin-top: 12px; }
+
+.flame { transform-box: fill-box; transform-origin: 50% 100%; animation: flicker .45s ease-in-out infinite alternate; }
+.flames > g:nth-child(2) .flame { animation-duration: .58s; }
+@keyframes flicker { from { transform: scale(1, 1) rotate(-3deg); } to { transform: scale(.9, 1.12) rotate(4deg); } }
+.glow { animation: glow 1.3s ease-in-out infinite alternate; transition: opacity .5s; }
+@keyframes glow { to { opacity: .5; } }
+.smoke { stroke-dasharray: 90; stroke-dashoffset: 90; opacity: 0; }
+.blown .flame { animation: blowOut .45s ease-in forwards; }
+@keyframes blowOut { to { transform: translateX(26px) scale(.1) skewX(-30deg); opacity: 0; } }
+.blown .glow { animation: none; opacity: 0; }
+.blown .smoke { animation: smoke 2.6s ease-out .35s forwards; }
+@keyframes smoke { 0% { opacity: .85; stroke-dashoffset: 90; } 55% { opacity: .6; stroke-dashoffset: 0; } 100% { opacity: 0; stroke-dashoffset: 0; transform: translateY(-14px); } }
 
 /* ══ Camera viewfinder ════════════════════════════════════════ */
 .viewfinder { position: fixed; left: 30px; bottom: 30px; z-index: 20; width: 188px; transform: rotate(-3deg) translateY(30px); opacity: 0;
@@ -411,6 +466,12 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .scene.reveal .quiz-col { height: 0; margin: 0; }
   .scene.reveal .quiz-col > * { width: min(430px, 92vw); }
   .viewfinder { width: 118px; left: 10px; bottom: 10px; }
+  .msg-controls { flex-wrap: wrap; justify-content: center; height: auto; gap: 14px; }
+  .cake-layout { flex-direction: column; gap: 26px; padding: 30px 20px 34px; }
+  .cake-side { width: min(300px, 62vw); }
+  .cake-strip { width: 116%; height: 46%; left: -8%; top: -6%; transform: rotate(-3deg); }
+  .word-rows { font-size: min(3.1px, .62vw); }
+  .love { font-size: 42px; }
   .viewfinder.playing { width: min(320px, 90vw); }
   .vf-caption { font-size: 15px; }
   .vf-actions { gap: 6px; }

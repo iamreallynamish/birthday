@@ -115,6 +115,7 @@
           <div class="msg-controls" id="msgControls">
             <button class="tag-btn" id="replayMsg" type="button"></button>
             <button class="tag-btn" id="skipMsg" type="button"></button>
+            <button class="tag-btn primary" id="closeCard" type="button"></button>
           </div>
         </div>
 
@@ -148,6 +149,58 @@
           </div>
         </div>
       </aside>
+    </section>
+
+    <!-- ══ 3 · Her reaction, played back ══ -->
+    <section class="screen" id="screen-reaction">
+      <div class="reaction drop-in" style="--i:0">
+        <div class="reaction-photo">
+          <span class="tape tape-a"></span>
+          <div class="reaction-paper">
+            <video id="reactionVideo" controls playsinline></video>
+            <p class="hand reaction-caption" id="reactionCaption"></p>
+          </div>
+        </div>
+        <div class="btn-row">
+          <a class="tag-btn" id="reactionSave"></a>
+          <button class="tag-btn primary" id="reactionNext" type="button"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 4 · The cake ══ -->
+    <section class="screen" id="screen-cake">
+      <div class="note cake-page drop-in" style="--i:0" id="cakePage">
+        <span class="tape tape-a"></span>
+        <div class="torn" data-torn="top,right,bottom,left" data-paper="cream">
+          <div class="cake-bg">
+            <div class="torn cake-strip" data-torn="right" data-paper="gingham" data-amp="9"></div>
+          </div>
+          <div class="cake-layout">
+            <div class="cake-side">
+              <div class="cake-art sticker" id="cakeArt"></div>
+              <div class="cake-lily sticker" id="cakeLily"></div>
+              <div class="cake-deco ink k-h1 sticker" data-art="heart"></div>
+              <div class="cake-deco ink k-s1 sticker" data-art="sparkle"></div>
+              <div class="cake-deco ink k-s2 sticker" data-art="sparkle"></div>
+            </div>
+            <div class="cake-words">
+              <div class="word-rows" id="cakeTitle"></div>
+              <p class="love" id="cakeLove"></p>
+              <div class="cake-action" id="cakeAction">
+                <button class="tag-btn primary" id="blowBtn" type="button"></button>
+              </div>
+              <div class="again" id="again" hidden>
+                <p class="hand again-q" id="againQ"></p>
+                <div class="btn-row">
+                  <button class="tag-btn primary" id="againYes" type="button"></button>
+                  <button class="link-btn" id="againReaction" type="button"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
