@@ -9,7 +9,7 @@
 window.BIRTHDAY_CONFIG = {
 
   /* ── Names ─────────────────────────────────────────────────────── */
-  herName: "[Her name]",
+  herName: "Sanaa",
   yourName: "[Your name]",
 
   /* ── Opening · big text, then the date rolls in on cubes ───────── */
@@ -121,22 +121,23 @@ window.BIRTHDAY_CONFIG = {
      the text shrinks slightly by itself if a page gets too full.
      ─────────────────────────────────────────────────────────────── */
   message: {
-    greeting: "Dear [Her name],",
+    greeting: "Happy birthday, my princess ♡",
 
     leftPage: [
-      "[ Your first paragraph goes here. Replace this text in js/config.js. ]",
-      "[ Second paragraph: a few more lines of your own words. ]",
-      "[ Third paragraph, if you'd like one on this page. ]",
+      "You've been so much to me, more than I know how to say. The last few months were hard on both of us, you know that better than anyone, and somehow you were still more than amazing through all of it.",
+      "You're the most beautiful, most angel-looking girl I've ever fucking met. I'm proud every single day that I get to be your boyfriend and call you my girlfriend.",
+      "I really, really miss you here.",
     ],
 
     rightPage: [
-      "[ The message continues on the right-hand page. ]",
-      "[ Another paragraph of your own words. ]",
-      "[ Your closing lines. ]",
+      "I'm so proud of you that I run out of words. Whatever you do, you do it the best.",
+      "You know me better than I know myself, and you are such a fucking amazing human being.",
+      "So stay weird. And most importantly, stay MINE.",
+      "I really, really fucking love you.",
     ],
 
-    signOff: "Happy birthday ♡",
-    signature: "[Your name]",
+    signOff: "Happy birthday, Sanaa ♡",
+    signature: "I love you. Again.",
 
     replayButton: "↺ write it again",
     skipButton: "show the whole letter",
