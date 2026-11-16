@@ -25,7 +25,7 @@ window.BIRTHDAY_CONFIG = {
   },
 
   /* ── Screen 1 · the lock ───────────────────────────────────────── */
-  password: "2107",
+  password: "2106",
 
   lock: {
     title: "psst… this one's for you",
@@ -40,10 +40,9 @@ window.BIRTHDAY_CONFIG = {
 
   // Revealed one at a time, in this order.
   hints: [
-    "It isn't your birthday, and it isn't mine… but it's a day that belongs to both of us.",
-    "It's a date, not a number. Day first, then month.",
-    "Think back to the day “you and me” quietly turned into “us”.",
-    "It was the middle of the year: the twenty-first day of the seventh month.",
+    "Where it all began.",
+    "June.",
+    "21.",
   ],
 
   // Shown (at random) when she types the wrong code.
@@ -89,35 +88,20 @@ window.BIRTHDAY_CONFIG = {
      ─────────────────────────────────────────────────────────────── */
   questions: [
     {
-      question: "[ Question 1: write your first question about the two of you here ]",
-      options: [
-        "[ Correct answer ]",
-        "[ Wrong answer ]",
-        "[ Wrong answer ]",
-        "[ Wrong answer ]",
-      ],
+      question: "What is our favourite place?",
+      options: ["Hauz Khas", "Connaught Place", "Tarun Enclave", "Bal Bharati"],
       correctIndex: 0,
       cheer: "yes! one seal down ♡",
     },
     {
-      question: "[ Question 2: write your second question here ]",
-      options: [
-        "[ Wrong answer ]",
-        "[ Correct answer ]",
-        "[ Wrong answer ]",
-        "[ Wrong answer ]",
-      ],
-      correctIndex: 1,
+      question: "What is our favourite way of commuting?",
+      options: ["Scooty", "Auto", "Cab", "Car"],
+      correctIndex: 0,
       cheer: "of course you knew ♡",
     },
     {
-      question: "[ Question 3: write your third question here ]",
-      options: [
-        "[ Wrong answer ]",
-        "[ Wrong answer ]",
-        "[ Correct answer ]",
-        "[ Wrong answer ]",
-      ],
+      question: "What is our favourite food spot?",
+      options: ["Social", "AS Momos", "Kwality Momos", "McDonald's"],
       correctIndex: 2,
       cheer: "that's all three ♡",
     },
